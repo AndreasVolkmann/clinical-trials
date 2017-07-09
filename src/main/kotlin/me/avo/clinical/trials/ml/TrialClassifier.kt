@@ -1,10 +1,5 @@
 package me.avo.clinical.trials.ml
 
-import me.avo.clinical.trials.Trial
-import quickml.data.AttributesMap
-import quickml.data.instances.ClassifierInstance
+import java.io.Serializable
 
-class TrialClassifier(trial: Trial) : ClassifierInstance(
-        AttributesMap(mapOf("summary" to trial.summary)),
-        trial.keywords.first()
-)
+data class TrialClassifier(val label: String, val summary: String): Serializable

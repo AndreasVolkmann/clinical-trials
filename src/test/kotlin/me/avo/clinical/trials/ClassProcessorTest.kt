@@ -18,7 +18,7 @@ internal class ClassProcessorTest {
         //keys.filter { it.value.size > 1 }.values.sortedByDescending { it.size }.printTen()
         val processor = base(keys)
         val trials = processor.trimToAverage().let {
-            it.values.forEach { it.size shouldBeLessOrEqualTo  4 }
+            it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
             TrialCombiner.make(it)
         }
 
@@ -40,7 +40,7 @@ internal class ClassProcessorTest {
 
     fun base(data: Map<String, List<String>>) = ClassProcessor(data).apply {
         analyze()
-        search("endo")
+        search("endoc")
     }
 
 }

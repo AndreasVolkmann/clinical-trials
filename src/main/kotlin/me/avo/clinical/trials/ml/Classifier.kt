@@ -1,26 +1,38 @@
 package me.avo.clinical.trials.ml
 
 import me.avo.clinical.trials.Trial
-import quickml.supervised.ensembles.randomForest.randomDecisionForest.RandomDecisionForestBuilder
-import quickml.supervised.tree.decisionTree.DecisionTreeBuilder
+import org.apache.spark.SparkConf
+import org.apache.spark.api.java.JavaSparkContext
+import org.apache.spark.sql.Encoders
+import org.apache.spark.sql.SparkSession
+
 
 class Classifier(val trials: List<Trial>) {
 
+    val encoder = Encoders.bean(JavaSparkTrial::class.java)
 
-    fun run() {
-        val data = trials.map { TrialClassifier(it) }
+    fun spark() {
+        val data = trials.map {
+            JavaSparkTrial().apply {
+                label = it.keywords.first()
+                summary = it.summary
+            }
+        }
 
-        val i = 1
-        val training = data.drop(i)
-        val test = data.take(i)
+        val conf = SparkConf()
+                .setMaster("local")
+                .setAppName("Clinical Trials")
+        val sc = JavaSparkContext(conf)
 
-        val tree = RandomDecisionForestBuilder(DecisionTreeBuilder<TrialClassifier>()).buildPredictiveModel(training)
+        val spark = SparkSession
+                .builder()
+                .getOrCreate()
 
 
-        val input = test.first().attributes
+        val dataset = spark.createDataset(data, encoder)
 
-        val prediction = tree.predict(input)
-        println("Prediction: $prediction")
+        dataset.show(5)
+
 
     }
 

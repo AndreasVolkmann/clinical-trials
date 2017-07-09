@@ -15,7 +15,8 @@ object TrialCombiner {
 
 
     fun export(trials: List<Trial>) = File("trials.txt").printWriter().use { out ->
-        out.println("Label${del}Summary")
+        val headers = listOf("Label", "Summary")
+        out.println(headers.joinToString(del))
         trials.map { listOf(it.keywords.first().clean(), it.summary.clean()) }
                 .map { it.map { it.clean() } }
                 .filter { it.all { it.isNotBlank() } }

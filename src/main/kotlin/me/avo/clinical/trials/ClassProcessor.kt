@@ -23,6 +23,8 @@ class ClassProcessor(val data: Map<String, List<String>>) {
             .printTen()
 
 
+    val sizeThreshold = 10
+
     fun trimToAverage(): Map<String, List<String>> {
         // order by appearance
         val sizeMap = flatKeys
@@ -31,11 +33,14 @@ class ClassProcessor(val data: Map<String, List<String>>) {
                 .toMap()
 
         return data
-                .mapValues { (id, labels) ->
-                    labels.sortedByDescending { sizeMap[it] }
-                            .take(average.toInt())
-                }
+                .mapValues { (id, labels) -> processLabels(labels, sizeMap) } // process labels
+                .filterValues { it.isNotEmpty() } // if there are no more labels, filter out this trial
                 .alsoPrint { "Final size: ${it.size}. Truncated ${data.size - it.size}" }
     }
+
+    fun processLabels(labels: List<String>, sizeMap: Map<String, Int>) = labels
+            .filter { sizeMap[it]!! > sizeThreshold } // filter out labels that are below the threshold
+            .sortedByDescending { sizeMap[it] } // sort by appearance
+            .take(average.toInt()) // take the average max
 
 }
