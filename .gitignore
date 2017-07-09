@@ -1,7 +1,8 @@
 # IntelliJ project files
 .idea
-*.iml
 out
 gen
 /build
 .gradle
+trials.txt
+*.iml

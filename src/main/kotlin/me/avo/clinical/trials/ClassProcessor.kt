@@ -14,7 +14,7 @@ class ClassProcessor(val data: Map<String, List<String>>) {
 
     fun search(term: String) = flatKeys
             .alsoPrint { "Containing '$term':" }
-            .filter { it.contains("endoc", true) }
+            .filter { it.contains(term, true) }
             .alsoPrint { formatPercent(it.size, flatKeys.size) }
             .groupBy { it }
             .mapValues { it.value.size }
@@ -25,8 +25,10 @@ class ClassProcessor(val data: Map<String, List<String>>) {
 
     fun trimToAverage(): Map<String, List<String>> {
         // order by appearance
-        val sizeMap = flatKeys.groupBy { it }
-                .map { (label, list) -> label to list.size }.toMap()
+        val sizeMap = flatKeys
+                .groupBy { it }
+                .map { (label, list) -> label to list.size }
+                .toMap()
 
         return data
                 .mapValues { (id, labels) ->

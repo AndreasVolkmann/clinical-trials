@@ -1,5 +1,6 @@
 package me.avo.clinical.trials
 
+import me.avo.clinical.trials.ml.Classifier
 import org.amshove.kluent.shouldBeLessOrEqualTo
 import org.junit.jupiter.api.Test
 
@@ -19,9 +20,10 @@ internal class ClassProcessorTest {
         val trials = processor.trimToAverage().let {
             it.values.forEach { it.size shouldBeLessOrEqualTo  4 }
             TrialCombiner.make(it)
-        }.printTen()
+        }
 
-
+        //Classifier(trials).run()
+        TrialCombiner.export(trials)
     }
 
     @Test

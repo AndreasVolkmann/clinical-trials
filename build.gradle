@@ -17,14 +17,15 @@ apply plugin: 'kotlin'
 repositories {
     mavenCentral()
     jcenter()
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
+
+    maven { url 'https://jitpack.io' }
+    maven { url "http://maven.twttr.com" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     //compile 'com.github.thomasnield:kotlin-statistics:0.3.0'
+    compile 'com.github.sanity:quickml:10.16'
 
     testCompile "org.junit.platform:junit-platform-launcher:1.0.0-M4"
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
