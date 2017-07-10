@@ -10,7 +10,7 @@ internal class ClassifierTest {
 
 
     @Test
-    fun encoder() = Classifier(listOf()).encoder
+    fun encoder() = Classifier().encoder
 
 
     @Test
@@ -20,9 +20,7 @@ internal class ClassifierTest {
             it.trimToAverage()
         }
         val trials = TrialCombiner.make(keywords)
-
-        Classifier(trials).spark()
-
+        Classifier().spark(trials)
     }
 
 }

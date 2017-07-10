@@ -4,7 +4,7 @@ import java.io.Serializable
 
 class JavaSparkTrial : Serializable {
 
-    var label: String = ""
+    var label: Int = 0
     var summary: String = ""
 
 }
