@@ -29,6 +29,12 @@ dependencies {
     compile 'org.apache.spark:spark-mllib_2.11:2.1.1'
     compile 'org.apache.spark:spark-core_2.11:2.1.1'
 
+    compile 'com.hazelcast.jet:hazelcast-jet:0.4'
+
+    compile 'org.datavec:datavec-api:0.8.0'
+    compile 'org.deeplearning4j:deeplearning4j-core:0.8.0'
+    compile 'org.nd4j:nd4j-native-platform:0.8.0'
+
     testCompile "org.junit.platform:junit-platform-launcher:1.0.0-M4"
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
     testCompile "org.amshove.kluent:kluent:1.24"

@@ -1,6 +1,5 @@
 package me.avo.clinical.trials
 
-import me.avo.clinical.trials.ml.Classifier
 import org.amshove.kluent.shouldBeLessOrEqualTo
 import org.junit.jupiter.api.Test
 
@@ -17,12 +16,32 @@ internal class ClassProcessorTest {
         val keys = ClassLoader.loadKeywords()
         //keys.filter { it.value.size > 1 }.values.sortedByDescending { it.size }.printTen()
         val processor = base(keys)
-        val trials = processor.trimToAverage().let {
-            it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
-            TrialCombiner.make(it)
+        val trials = processor.trimToAverage()
+                .let {
+                    it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
+                    TrialCombiner.make(it)
+                }.sortedBy { it.summary.length }
+
+        trials.filter { it.summary.split(" ").size < 4 }
+                .alsoPrint { "Trials with summary less than 2 words: ${it.size}" }
+                .printTen()
+
+
+
+
+        TrialCombiner.export(trials.take(20_000))
+    }
+
+
+    @Test
+    fun common() {
+        val keys = ClassLoader.loadKeywords()
+        val trials = ClassProcessor(keys).let {
+            val data = it.filterByCommon(5)
+            val filtered = it.trimToAverage(data)
+            TrialCombiner.make(filtered)
         }
 
-        //Classifier(trials).run()
         TrialCombiner.export(trials)
     }
 

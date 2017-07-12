@@ -5,6 +5,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.classification.LogisticRegressionModel
+import org.apache.spark.ml.classification.NaiveBayes
 import org.apache.spark.ml.feature.HashingTF
 import org.apache.spark.ml.feature.StopWordsRemover
 import org.apache.spark.ml.feature.Tokenizer
@@ -61,18 +62,17 @@ class Classifier {
             .setNumFeatures(1000)
             .setInputCol(remover.outputCol)
             .setOutputCol("features")
-    val lr = LogisticRegression()
-            .setMaxIter(10)
-            .setRegParam(0.001)
+    val model = NaiveBayes()
+
     val pipeline = Pipeline()
-            .setStages(arrayOf(tokenizer, remover, hashingTF, lr))
+            .setStages(arrayOf(tokenizer, remover, hashingTF, model))
 
 
-    fun prepare(spark: SparkSession, data: List<JavaSparkTrial>): LogisticRegressionModel = spark.createDataset(data, encoder)
+    fun prepare(spark: SparkSession, data: List<JavaSparkTrial>) = spark.createDataset(data, encoder)
             .let { tokenizer.transform(it).drop(tokenizer.inputCol).apply { show(5) } }
             .let { remover.transform(it).drop(tokenizer.outputCol).apply { show(5) } }
             .let { hashingTF.transform(it).drop(remover.outputCol) }
-            .let { lr.fit(it) }
+            .let { model.fit(it) }
 
 
 }
