@@ -18,13 +18,12 @@ repositories {
     mavenCentral()
     jcenter()
 
-    maven { url 'https://jitpack.io' }
     maven { url "http://maven.twttr.com" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    //compile 'com.github.thomasnield:kotlin-statistics:0.3.0'
+    compile 'org.nield:kotlinstatistics:0.1.1'
 
     compile 'org.apache.spark:spark-mllib_2.11:2.1.1'
     compile 'org.apache.spark:spark-core_2.11:2.1.1'

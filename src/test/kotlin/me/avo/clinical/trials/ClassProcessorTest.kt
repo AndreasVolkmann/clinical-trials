@@ -21,12 +21,11 @@ internal class ClassProcessorTest {
                     it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
                     TrialCombiner.make(it)
                 }.sortedBy { it.summary.length }
+                .filter { it.summary.isNotBlank() }
 
         trials.filter { it.summary.split(" ").size < 4 }
                 .alsoPrint { "Trials with summary less than 2 words: ${it.size}" }
                 .printTen()
-
-
 
 
         TrialCombiner.export(trials.take(20_000))
@@ -40,7 +39,7 @@ internal class ClassProcessorTest {
             val data = it.filterByCommon(5)
             val filtered = it.trimToAverage(data)
             TrialCombiner.make(filtered)
-        }
+        }.filter { it.summary.contains(" ") }
 
         TrialCombiner.export(trials)
     }

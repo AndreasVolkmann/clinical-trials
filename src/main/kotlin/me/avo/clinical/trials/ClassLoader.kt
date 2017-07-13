@@ -4,7 +4,10 @@ import java.io.File
 
 object ClassLoader {
 
-    const val dir = "D:\\DL\\clinical-trials\\"
+    val system: String = System.getProperty("os.name")
+    val dir = if (system.contains("Windows", true)) "D:\\DL\\clinical-trials\\"
+    else "/Users/av/Desktop/dev/clinical-trials-20170618/"
+
     const val delimiter = "|"
 
     const val summaryFile = "brief_summaries.txt"

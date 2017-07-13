@@ -9,10 +9,9 @@ object TrialCombiner {
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
             .filter { summaries.containsKey(it.key) }
-            .map { (id, keywords) ->
-                Trial(id, keywords, summaries [id]!!)
-            }.alsoPrint { "Was able to combine ${it.size} Trials" }
-
+            .map { (id, keywords) -> Trial(id, keywords, summaries[id]!!.filterWords()) }
+            // TODO better analysis of filtering
+            .alsoPrint { "Was able to combine ${it.size} Trials" }
 
     fun export(trials: List<Trial>) = File("trials.txt").printWriter().use { out ->
         val headers = listOf("Label", "Summary")
@@ -31,5 +30,8 @@ object TrialCombiner {
             .replace("\"", "")
             .replace(Regex("\\s+"), " ")
             .trim()
+
+    fun cleanText(text: String) = text.clean()
+
 
 }
