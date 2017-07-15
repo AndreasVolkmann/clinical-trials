@@ -25,8 +25,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'org.nield:kotlinstatistics:0.1.1'
 
-    compile 'org.apache.spark:spark-mllib_2.11:2.1.1'
-    compile 'org.apache.spark:spark-core_2.11:2.1.1'
+    //compile 'org.apache.spark:spark-mllib_2.11:2.1.1'
+    //compile 'org.apache.spark:spark-core_2.11:2.1.1'
 
     compile 'com.hazelcast.jet:hazelcast-jet:0.4'
 

@@ -12,17 +12,17 @@ class ClassProcessor(val data: Map<String, List<String>>) {
         println("Average per trial: $average")
     }
 
-    fun findCommon() = flatKeys.groupBy { it }
+    fun findCommon(amount: Int = 10) = flatKeys.groupBy { it }
             .values
             .sortedByDescending { it.size }
             .map { it.first() to it.size }
             .also {
-                it.printTen()
+                it.take(amount).mapIndexed { i, pair -> pair.apply { println("${i + 1}) $pair") } }
                         .sumBy { it.second }
                         .alsoPrint { "Combined size: $it" }
             }
 
-    fun filterByCommon(top: Int) = findCommon().take(top).map { it.first }.let { keys ->
+    fun filterByCommon(top: Int) = findCommon(top).take(top).map { it.first }.let { keys ->
         data.filterValues { it.any { it in keys } }
     }
 

@@ -19,11 +19,11 @@ val words = setOf(
         "it", "if", "one", "three", "used", "effect", "control", "compared", "whether", "between", "assess", "was",
         "non", "aim", "up", "test", "months", "primary", "high", "time", "more", "participants", "weeks", "data",
         "controlled", "studies", "quality", "associated", "standard", "receive", "well", "objective", "research",
-        "improve", "other", "function", "outcomes", "years", "life", "compare", "than", "placebo", "first",
+        "improve", "other", "function", "outcomes", "years", "compare", "than", "placebo", "first",
         "effective", "single", "related", "were", "such", "mg", "rate", "response", "different", "activity",
         "investigate", "no", "levels", "new", "over", "symptoms", "effectiveness", "post", "but", "how", "stop",
         "combination", "treating", "phase", "day", "we", "following", "when", "given", "they", "about",
-        "days", "either", "help", "without", "ii", "term", "i", "long", "daily", "treated", "rationale",
+        "days", "either", "help", "without", "term",  "long", "daily", "treated", "rationale",
         "low", "into", "type", "system", "doses", "week", "side", "ways", "healthy", "each", "both", "them",
         "before", "acute", "administered", "tests", "designed", "people", "stage", "advanced", "pressure",
         "changes", "there", "known", "normal", "hypothesis", "studying", "reduce", "tolerability", "information",
@@ -48,7 +48,7 @@ val ignore = setOf(
         "vaccine", "diabetes", "bone", "radiation", "oral", "period", "kill", "drugs", "lung", "insulin",
         "infection", "physical", "surgical", "exercise", "training", "medical", "cognitive", "tissue",
         "adults", "muscle", "weight", "imaging", "arm", "hospital", "blind", "cardiac", "anti", "postoperative",
-        "survival", "liver", "stroke", "glucose", "sleep", "MRI"
+        "survival", "liver", "stroke", "glucose", "sleep", "MRI", "life"
 )
 
 fun isCommon(text: String) = text.toLowerCase() in words

@@ -27,4 +27,21 @@ object SummaryAnalyzer {
     }
 
 
+    /**
+     * Find words that would be cleaned and show their relative occurence
+     */
+    fun findCleanedWords(trials: List<String>) = trials
+            .map { TrialCombiner.cleanText(it) }
+            .map { it.split(" ").filter { it in words } }
+            .flatMap { it.distinct() }
+            .groupBy { it }
+            .map { it.key to it.value.size }
+            .sortedByDescending { it.second }
+            .take(15)
+            .forEach { (lov, size) -> println("$lov: ${formatPercent(size, trials.size)}") }
+
+
+
+
+
 }

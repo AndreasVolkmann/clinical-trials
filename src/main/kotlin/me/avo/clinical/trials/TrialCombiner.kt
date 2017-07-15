@@ -9,7 +9,7 @@ object TrialCombiner {
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
             .filter { summaries.containsKey(it.key) }
-            .map { (id, keywords) -> Trial(id, keywords, summaries[id]!!.filterWords()) }
+            .map { (id, keywords) -> makeTrial(id, keywords) }
             // TODO better analysis of filtering
             .alsoPrint { "Was able to combine ${it.size} Trials" }
 
@@ -33,5 +33,12 @@ object TrialCombiner {
 
     fun cleanText(text: String) = text.clean()
 
+
+    fun makeRaw(data: Map<String, List<String>>) = data
+            .filter { summaries.containsKey(it.key) }
+            .map { (id, keywords) -> makeTrial(id, keywords) }
+
+
+    fun makeTrial(id: String, keywords: List<String>) = Trial(id, keywords, summaries[id]!!.filterWords().clean())
 
 }

@@ -33,20 +33,32 @@ internal class ClassProcessorTest {
 
 
     @Test
+    fun findTrialsWithLov() {
+        val lov = "Quality of life"
+        ClassLoader.loadKeywords()
+                .filter { it.value.contains(lov) }
+                .let { ClassProcessor(it).trimToAverage() }
+                .let { keys -> TrialCombiner.make(keys) }
+                .printTen()
+    }
+
+
+    @Test
     fun common() {
         val keys = ClassLoader.loadKeywords()
         val trials = ClassProcessor(keys).let {
-            val data = it.filterByCommon(5)
+            val data = it.filterByCommon(15)
             val filtered = it.trimToAverage(data)
             TrialCombiner.make(filtered)
         }.filter { it.summary.contains(" ") }
+        //.also { it.distinctBy { it.keywords.first() }.onEach { println(it) } }
 
         TrialCombiner.export(trials)
     }
 
     @Test
     fun conditions() {
-        val conds = ClassLoader.loadConditions()
+        val conds = ClassLoader.loadConditions().print(10)
         base(conds)
     }
 
@@ -59,6 +71,17 @@ internal class ClassProcessorTest {
     fun base(data: Map<String, List<String>>) = ClassProcessor(data).apply {
         analyze()
         search("endoc")
+    }
+
+    @Test
+    fun `find LOVs that appear in more than one list`() {
+        val keys = ClassLoader.loadKeywords().flatMap { it.value }.distinct()
+        val conds = ClassLoader.loadConditions().flatMap { it.value }.distinct()
+        val inter = ClassLoader.loadInterventions().flatMap { it.value }.distinct()
+        (keys + conds + inter).groupBy { it }.filter { it.value.size > 1 }.forEach { key, list ->
+            println("$key, ${list.size}")
+        }
+
     }
 
 }
