@@ -39,6 +39,7 @@ object TrialCombiner {
             .map { (id, keywords) -> makeTrial(id, keywords) }
 
 
-    fun makeTrial(id: String, keywords: List<String>) = Trial(id, keywords, summaries[id]!!.filterWords().clean())
+    fun makeTrial(id: String, keywords: List<String>)
+            = Trial(id, keywords, summaries[id]!!.filterWords(keywords).clean())
 
 }

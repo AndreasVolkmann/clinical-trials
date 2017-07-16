@@ -13,12 +13,12 @@ internal class SummaryAnalyzerTest {
 
     @Test
     fun analyzeLov() {
-        val lov = "Quality of life"
-        println("Analyze $lov")
+        val lov = "Exercise"
+        println("Analyze: $lov")
         ClassLoader.loadKeywords()
                 .filterValues { lov in it }
                 .let { TrialCombiner.makeRaw(it) }
-                .let { SummaryAnalyzer.findCleanedWords(it.map { it.summary }) }
+                .let { SummaryAnalyzer.findCleanedWords(it.map { it.summary }, 30) }
 
     }
 

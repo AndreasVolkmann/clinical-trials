@@ -31,7 +31,8 @@ object ClassLoader {
     fun loadInterventions() = loadPair("browse_interventions.txt")
 
 
-    fun loadPair(fileName: String) = extract(fileName) { it[1] to it[2].capitalize() }
+    fun loadPair(fileName: String) = extract(fileName)
+    { it[1] to it[2].split(" ").map { it.capitalize() }.joinToString(" ") }
             .groupBy { it.first }
             .mapValues { it.value.map { it.second } }
 

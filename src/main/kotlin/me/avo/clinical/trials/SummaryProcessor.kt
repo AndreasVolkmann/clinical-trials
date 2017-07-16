@@ -7,7 +7,10 @@ fun List<String>.filterWords(): List<String> = size.let { initial ->
     filterNot { isCommon(it) }.alsoPrint { "Filtered words: ${formatPercent(it.size, initial)}" }
 }
 
-fun String.filterWords(): String = split(" ").filterNot(::isCommon).joinToString(" ")
+fun String.filterWords(ignore: List<String>): String = this
+        .split(" ") // split into words
+        .filter { it in ignore || !isCommon(it) } // only keep words that are in ignore or aren't common
+        .joinToString(" ")
 
 
 val words = setOf(
@@ -20,10 +23,10 @@ val words = setOf(
         "non", "aim", "up", "test", "months", "primary", "high", "time", "more", "participants", "weeks", "data",
         "controlled", "studies", "quality", "associated", "standard", "receive", "well", "objective", "research",
         "improve", "other", "function", "outcomes", "years", "compare", "than", "placebo", "first",
-        "effective", "single", "related", "were", "such", "mg", "rate", "response", "different", "activity",
+        "effective", "single", "related", "were", "such", "mg", "rate", "response", "different",
         "investigate", "no", "levels", "new", "over", "symptoms", "effectiveness", "post", "but", "how", "stop",
         "combination", "treating", "phase", "day", "we", "following", "when", "given", "they", "about",
-        "days", "either", "help", "without", "term",  "long", "daily", "treated", "rationale",
+        "days", "either", "help", "without", "term", "long", "daily", "treated", "rationale",
         "low", "into", "type", "system", "doses", "week", "side", "ways", "healthy", "each", "both", "them",
         "before", "acute", "administered", "tests", "designed", "people", "stage", "advanced", "pressure",
         "changes", "there", "known", "normal", "hypothesis", "studying", "reduce", "tolerability", "information",
@@ -39,7 +42,9 @@ val words = setOf(
         "small", "method", "measure", "loss", "failure", "multiple", "measures", "technique", "lower",
         "under", "major", "change", "support", "practice", "evaluation", "treatments", "incidence", "our",
         "design", "center", "secondary", "approach", "positive", "hours", "protocol", "goals", "cover", "wide",
-        "range", "gsk", "success", "before", "background", "increases"
+        "range", "gsk", "success", "before", "background", "increases", "develop", "interventions", "parameters",
+        "need", "month", "pre", "end", "called", "receiving", "reduction", "overall", "prior", "less", "reported",
+        "evaluating", "available", "objectives", "explore", "before"
 )
 
 val ignore = setOf(
@@ -48,7 +53,8 @@ val ignore = setOf(
         "vaccine", "diabetes", "bone", "radiation", "oral", "period", "kill", "drugs", "lung", "insulin",
         "infection", "physical", "surgical", "exercise", "training", "medical", "cognitive", "tissue",
         "adults", "muscle", "weight", "imaging", "arm", "hospital", "blind", "cardiac", "anti", "postoperative",
-        "survival", "liver", "stroke", "glucose", "sleep", "MRI", "life"
+        "survival", "liver", "stroke", "glucose", "sleep", "MRI", "life", "activity", "cardiovascular", "human",
+        "therapeutic", "medication", "mortality", "skin", "invasive", "inflammatory"
 )
 
 fun isCommon(text: String) = text.toLowerCase() in words

@@ -34,12 +34,12 @@ internal class ClassProcessorTest {
 
     @Test
     fun findTrialsWithLov() {
-        val lov = "Quality of life"
+        val lov = "Cancer"
         ClassLoader.loadKeywords()
                 .filter { it.value.contains(lov) }
                 .let { ClassProcessor(it).trimToAverage() }
                 .let { keys -> TrialCombiner.make(keys) }
-                .printTen()
+                .print(20)
     }
 
 
@@ -47,7 +47,7 @@ internal class ClassProcessorTest {
     fun common() {
         val keys = ClassLoader.loadKeywords()
         val trials = ClassProcessor(keys).let {
-            val data = it.filterByCommon(15)
+            val data = it.filterByCommon(30)
             val filtered = it.trimToAverage(data)
             TrialCombiner.make(filtered)
         }.filter { it.summary.contains(" ") }
