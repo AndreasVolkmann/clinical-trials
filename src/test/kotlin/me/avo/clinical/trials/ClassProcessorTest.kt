@@ -14,21 +14,13 @@ internal class ClassProcessorTest {
     @Test
     fun keywords() {
         val keys = ClassLoader.loadKeywords()
-        //keys.filter { it.value.size > 1 }.values.sortedByDescending { it.size }.printTen()
         val processor = base(keys)
-        val trials = processor.trimToAverage()
-                .let {
-                    it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
-                    TrialCombiner.make(it)
-                }.sortedBy { it.summary.length }
-                .filter { it.summary.isNotBlank() }
-
-        trials.filter { it.summary.split(" ").size < 4 }
-                .alsoPrint { "Trials with summary less than 2 words: ${it.size}" }
-                .printTen()
-
-
-        TrialCombiner.export(trials.take(20_000))
+        processor.trimToAverage()
+                .let { TrialCombiner.make(it) } // make Trials
+                .filter { it.summary.split(" ").size > 6 } // at least 1 space / 2 words
+                .groupBy { it.keywords.first() } // group by 1st LOV
+                .flatMap { it.value.take(processor.sizeThreshold) } // take 50 from each
+                .let { TrialCombiner.export(it) }
     }
 
 
@@ -70,7 +62,7 @@ internal class ClassProcessorTest {
 
     fun base(data: Map<String, List<String>>) = ClassProcessor(data).apply {
         analyze()
-        search("endoc")
+        //search("endoc")
     }
 
     @Test

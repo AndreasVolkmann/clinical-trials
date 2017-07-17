@@ -38,12 +38,13 @@ class ClassProcessor(val data: Map<String, List<String>>) {
             .printTen()
 
 
-    val sizeThreshold = 10
+    val sizeThreshold = 1000
 
     fun trimToAverage(data: Map<String, List<String>> = this.data): Map<String, List<String>> {
         // order by appearance
         val sizeMap = flatKeys
                 .groupBy { it }
+                .alsoPrint { "Unique LOVs: ${it.size}" }
                 .map { (label, list) -> label to list.size }
                 .toMap()
 

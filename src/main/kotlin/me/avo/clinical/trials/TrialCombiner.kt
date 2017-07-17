@@ -5,7 +5,13 @@ import java.io.File
 object TrialCombiner {
 
     val del = "|"
-    val summaries = ClassLoader.loadSummaries()
+    val summaries = ClassLoader.loadDetailedSummaries()
+            .filterValues {
+                !it.contains("See above", true)
+                        && !it.contains("brief summary", true)
+                        && !it.contains("see summary", true)
+            }
+
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
             .filter { summaries.containsKey(it.key) }

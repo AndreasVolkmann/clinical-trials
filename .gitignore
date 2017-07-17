@@ -8,3 +8,4 @@ trials.txt
 *.iml
 results.txt
 old_res.txt
+py-ml/__pycache__/

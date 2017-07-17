@@ -11,6 +11,7 @@ object ClassLoader {
     const val delimiter = "|"
 
     const val summaryFile = "brief_summaries.txt"
+    const val detailSummaryFile = "detailed_descriptions.txt"
     const val keywordFile = "keywords.txt"
 
     fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name).useLines { lines ->
@@ -21,10 +22,18 @@ object ClassLoader {
     }
 
     fun loadSummaries() = extract(summaryFile) {
-        it[1] to it[2].removeSurrounding("\"").trim()
+        it[1] to it[2].trimQuotesAndSpace()
     }.toMap()
 
+    fun loadDetailedSummaries() = extract(detailSummaryFile) {
+        it[1] to it[2].trimQuotesAndSpace()
+    }.toMap()
+
+    fun String.trimQuotesAndSpace() = removeSurrounding("\"").trim()
+
     fun loadKeywords() = loadPair(keywordFile)
+            .mapValues { it.value.filterNot { it in lovsToIgnore } }
+            .filter { it.value.isNotEmpty() }
 
     fun loadConditions() = loadPair("browse_conditions.txt")
 
