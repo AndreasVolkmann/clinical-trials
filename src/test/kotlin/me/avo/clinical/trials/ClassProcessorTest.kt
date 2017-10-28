@@ -11,8 +11,7 @@ internal class ClassProcessorTest {
         summaries.printTen()
     }
 
-    @Test
-    fun keywords() {
+    @Test fun keywords() {
         val keys = ClassLoader.loadKeywords()
         //keys.filter { it.value.size > 1 }.values.sortedByDescending { it.size }.printTen()
         val processor = base(keys)
@@ -22,14 +21,13 @@ internal class ClassProcessorTest {
                     TrialCombiner.make(it)
                 }.sortedBy { it.summary.length }
 
-        trials.filter { it.summary.split(" ").size < 4 }
-                .alsoPrint { "Trials with summary less than 2 words: ${it.size}" }
+        val numWords = 10
+        trials.filter { it.summary.split(" ").size < numWords }
+                .alsoPrint { "Trials with summary less than $numWords words: ${it.size}" }
                 .printTen()
 
 
-
-
-        TrialCombiner.export(trials.take(20_000))
+        TrialCombiner.export(trials.take(30_000))
     }
 
 

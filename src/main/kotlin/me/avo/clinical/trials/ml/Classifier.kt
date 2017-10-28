@@ -72,7 +72,7 @@ class Classifier {
             .let { tokenizer.transform(it).drop(tokenizer.inputCol).apply { show(5) } }
             .let { remover.transform(it).drop(tokenizer.outputCol).apply { show(5) } }
             .let { hashingTF.transform(it).drop(remover.outputCol) }
-            .let { model.fit(it) }
+            .let(model::fit)
 
 
 }

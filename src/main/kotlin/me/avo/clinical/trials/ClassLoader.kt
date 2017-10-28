@@ -10,16 +10,17 @@ object ClassLoader {
     const val summaryFile = "brief_summaries.txt"
     const val keywordFile = "keywords.txt"
 
-    fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name).useLines { lines ->
-        lines.drop(1).filter { it.isNotBlank() }.map {
-            val split = it.split(delimiter)
-            body(split)
-        }.toList()
-    }
+    fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name)
+            .useLines { processSequence(it, body) }
 
-    fun loadSummaries() = extract(summaryFile) {
-        it[1] to it[2].removeSurrounding("\"").trim()
-    }.toMap()
+    fun <T : Any> processSequence(seq: Sequence<String>, body: (List<String>) -> T) = seq
+            .drop(1)
+            .filter(String::isNotBlank)
+            .map { it.split(delimiter) }
+            .map(body)
+            .toList()
+
+    fun loadSummaries() = extract(summaryFile) { it[1] to it[2].removeSurrounding("\"").trim() }.toMap()
 
     fun loadKeywords() = loadPair(keywordFile)
 
