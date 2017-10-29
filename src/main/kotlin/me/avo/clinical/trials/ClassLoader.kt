@@ -4,12 +4,17 @@ import java.io.File
 
 object ClassLoader {
 
-    const val dir = "D:\\DL\\clinical-trials\\"
+    val system: String = System.getProperty("os.name")
+    val dir = if (system.contains("Windows", true)) "D:\\DL\\clinical-trials\\"
+    else "/Users/av/Desktop/dev/clinical-trials-20170618/"
+
     const val delimiter = "|"
 
     const val summaryFile = "brief_summaries.txt"
+    const val detailSummaryFile = "detailed_descriptions.txt"
     const val keywordFile = "keywords.txt"
 
+<<<<<<< HEAD
     fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name)
             .useLines { processSequence(it, body) }
 
@@ -21,15 +26,36 @@ object ClassLoader {
             .toList()
 
     fun loadSummaries() = extract(summaryFile) { it[1] to it[2].removeSurrounding("\"").trim() }.toMap()
+=======
+    fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name).useLines { lines ->
+        lines.drop(1).filter { it.isNotBlank() }.map {
+            val split = it.split(delimiter)
+            body(split)
+        }.toList()
+    }
+
+    fun loadSummaries() = extract(summaryFile) {
+        it[1] to it[2].trimQuotesAndSpace()
+    }.toMap()
+
+    fun loadDetailedSummaries() = extract(detailSummaryFile) {
+        it[1] to it[2].trimQuotesAndSpace()
+    }.toMap()
+>>>>>>> bcc566020a40c5230c91aa02b7dc6e9aac9481a0
+
+    fun String.trimQuotesAndSpace() = removeSurrounding("\"").trim()
 
     fun loadKeywords() = loadPair(keywordFile)
+            .mapValues { it.value.filterNot { it in lovsToIgnore } }
+            .filter { it.value.isNotEmpty() }
 
     fun loadConditions() = loadPair("browse_conditions.txt")
 
     fun loadInterventions() = loadPair("browse_interventions.txt")
 
 
-    fun loadPair(fileName: String) = extract(fileName) { it[1] to it[2].capitalize() }
+    fun loadPair(fileName: String) = extract(fileName)
+    { it[1] to it[2].split(" ").map { it.capitalize() }.joinToString(" ") }
             .groupBy { it.first }
             .mapValues { it.value.map { it.second } }
 

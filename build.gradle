@@ -19,17 +19,23 @@ repositories {
     mavenCentral()
     jcenter()
 
-    maven { url 'https://jitpack.io' }
     maven { url "http://maven.twttr.com" }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+<<<<<<< HEAD
     compile "com.beust:jcommander:1.72"
     //compile 'com.github.thomasnield:kotlin-statistics:0.3.0'
 
     compile "org.apache.spark:spark-mllib_2.11:$spark_version"
     compile "org.apache.spark:spark-core_2.11:$spark_version"
+=======
+    compile 'org.nield:kotlinstatistics:0.3.0'
+
+    //compile 'org.apache.spark:spark-mllib_2.11:2.1.1'
+    //compile 'org.apache.spark:spark-core_2.11:2.1.1'
+>>>>>>> bcc566020a40c5230c91aa02b7dc6e9aac9481a0
 
     compile "org.tensorflow:tensorflow:1.4.0-rc0"
 
