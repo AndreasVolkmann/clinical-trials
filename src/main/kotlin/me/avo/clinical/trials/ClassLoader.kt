@@ -14,7 +14,6 @@ object ClassLoader {
     const val detailSummaryFile = "detailed_descriptions.txt"
     const val keywordFile = "keywords.txt"
 
-<<<<<<< HEAD
     fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name)
             .useLines { processSequence(it, body) }
 
@@ -25,15 +24,6 @@ object ClassLoader {
             .map(body)
             .toList()
 
-    fun loadSummaries() = extract(summaryFile) { it[1] to it[2].removeSurrounding("\"").trim() }.toMap()
-=======
-    fun <T : Any> extract(name: String, body: (split: List<String>) -> T): List<T> = File(dir + name).useLines { lines ->
-        lines.drop(1).filter { it.isNotBlank() }.map {
-            val split = it.split(delimiter)
-            body(split)
-        }.toList()
-    }
-
     fun loadSummaries() = extract(summaryFile) {
         it[1] to it[2].trimQuotesAndSpace()
     }.toMap()
@@ -41,7 +31,6 @@ object ClassLoader {
     fun loadDetailedSummaries() = extract(detailSummaryFile) {
         it[1] to it[2].trimQuotesAndSpace()
     }.toMap()
->>>>>>> bcc566020a40c5230c91aa02b7dc6e9aac9481a0
 
     fun String.trimQuotesAndSpace() = removeSurrounding("\"").trim()
 
@@ -52,7 +41,6 @@ object ClassLoader {
     fun loadConditions() = loadPair("browse_conditions.txt")
 
     fun loadInterventions() = loadPair("browse_interventions.txt")
-
 
     fun loadPair(fileName: String) = extract(fileName)
     { it[1] to it[2].split(" ").map { it.capitalize() }.joinToString(" ") }

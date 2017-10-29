@@ -4,17 +4,14 @@ import java.io.File
 
 object TrialCombiner {
 
-<<<<<<< HEAD
     const val del = "|"
-    val summaries = ClassLoader.loadSummaries()
+    //val summaries = ClassLoader.loadSummaries()
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
             .filter { summaries.containsKey(it.key) }
             .map { (id, keywords) -> Trial(id, keywords, summaries[id]!!) }
             .alsoPrint { "Was able to combine ${it.size} Trials" }
 
-=======
-    val del = "|"
     val summaries = ClassLoader.loadDetailedSummaries()
             .filterValues {
                 !it.contains("See above", true)
@@ -22,13 +19,6 @@ object TrialCombiner {
                         && !it.contains("see summary", true)
             }
 
-
-    fun make(data: Map<String, List<String>>): List<Trial> = data
-            .filter { summaries.containsKey(it.key) }
-            .map { (id, keywords) -> makeTrial(id, keywords) }
-            // TODO better analysis of filtering
-            .alsoPrint { "Was able to combine ${it.size} Trials" }
->>>>>>> bcc566020a40c5230c91aa02b7dc6e9aac9481a0
 
     fun export(trials: List<Trial>) = File("trials.txt").printWriter().use { out ->
         val headers = listOf("Label", "Summary")

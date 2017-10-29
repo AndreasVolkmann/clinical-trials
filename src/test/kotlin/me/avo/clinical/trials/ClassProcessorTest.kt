@@ -14,7 +14,7 @@ internal class ClassProcessorTest {
     @Test fun keywords() {
         val keys = ClassLoader.loadKeywords()
         val processor = base(keys)
-<<<<<<< HEAD
+
         val trials = processor.trimToAverage()
                 .let {
                     it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
@@ -28,7 +28,7 @@ internal class ClassProcessorTest {
 
 
         TrialCombiner.export(trials.take(30_000))
-=======
+
         processor.trimToAverage()
                 .let { TrialCombiner.make(it) } // make Trials
                 .filter { it.summary.split(" ").size > 6 } // at least 1 space / 2 words
@@ -46,7 +46,6 @@ internal class ClassProcessorTest {
                 .let { ClassProcessor(it).trimToAverage() }
                 .let { keys -> TrialCombiner.make(keys) }
                 .print(20)
->>>>>>> bcc566020a40c5230c91aa02b7dc6e9aac9481a0
     }
 
 

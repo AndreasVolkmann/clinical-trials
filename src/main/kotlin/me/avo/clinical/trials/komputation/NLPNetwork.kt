@@ -3,6 +3,8 @@ package me.avo.clinical.trials.komputation
 import com.komputation.cpu.workflow.CpuTrainer
 import com.komputation.initialization.uniformInitialization
 import com.komputation.loss.logisticLoss
+import com.komputation.optimization.OptimizationInstruction
+import com.komputation.optimization.adaptive.adam
 import com.komputation.optimization.stochasticGradientDescent
 import java.io.File
 import java.util.*
@@ -18,7 +20,7 @@ fun run(embeddingDimension: Int) {
     val random = Random(1)
     val initialization = uniformInitialization(random, -0.1f, 0.1f)
 
-    val optimization = stochasticGradientDescent(0.001f)
+    val optimization = adam()
 
     val batchSize = 32
     val hasFixedLength = false
@@ -67,12 +69,12 @@ fun run(embeddingDimension: Int) {
             .train()
 
     println("Took ${time / 1000 / 60} minutes")
-    updateScore(results, size)
+    updateScore(results, size, embeddingDimension, optimization)
 }
 
 fun CpuTrainer.train(): Long = measureTimeMillis { run() }
 
-fun updateScore(results: Pair<Int, Float>, size: Int) = results.let { (iteration, score) ->
+fun updateScore(results: Pair<Int, Float>, size: Int, embeddingDimension: Int, optimization: OptimizationInstruction) = results.let { (iteration, score) ->
     println("Best score: $results")
     val delimiter = "\t"
     val scoreFile = File("score.txt")
@@ -85,8 +87,8 @@ fun updateScore(results: Pair<Int, Float>, size: Int) = results.let { (iteration
 
     if (score > previousScore) {
         println("New High score!")
-        val headers = listOf("Score", "Iteration", "Size")
-        val line = listOf(score, iteration, size)
+        val headers = listOf("Score", "Iteration", "Size", "Dimension", "Optimization")
+        val line = listOf(score, iteration, size, embeddingDimension, optimization::class.simpleName)
         val converted = listOf(headers, line).map { it.joinToString(delimiter) }
         val linesToWrite = converted + lines
         scoreFile.printWriter().use { out ->
