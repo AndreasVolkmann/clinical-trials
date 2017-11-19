@@ -12,7 +12,7 @@ object TrialCombiner {
             .map { (id, keywords) -> Trial(id, keywords, summaries[id]!!) }
             .alsoPrint { "Was able to combine ${it.size} Trials" }
 
-    val summaries = ClassLoader.loadDetailedSummaries()
+    val summaries = ClassLoader.loadSummaries()
             .filterValues {
                 !it.contains("See above", true)
                         && !it.contains("brief summary", true)

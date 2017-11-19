@@ -53,10 +53,11 @@ internal class ClassProcessorTest {
     fun common() {
         val keys = ClassLoader.loadKeywords()
         val trials = ClassProcessor(keys).let {
-            val data = it.filterByCommon(30)
+            val data = it.filterByCommon(5)
             val filtered = it.trimToAverage(data)
             TrialCombiner.make(filtered)
         }.filter { it.summary.contains(" ") }
+
         //.also { it.distinctBy { it.keywords.first() }.onEach { println(it) } }
 
         TrialCombiner.export(trials)

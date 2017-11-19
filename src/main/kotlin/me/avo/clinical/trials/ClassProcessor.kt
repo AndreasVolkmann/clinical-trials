@@ -22,10 +22,10 @@ class ClassProcessor(val data: Map<String, List<String>>) {
                         .alsoPrint { "Combined size: $it" }
             }
 
-    fun filterByCommon(top: Int) = findCommon(top).take(top).map { it.first }.let { keys ->
-        data.filterValues { it.any { it in keys } }
-    }
-
+    fun filterByCommon(top: Int) = findCommon(top)
+            .take(top)
+            .map { it.first }
+            .let { keys -> data.filterValues { it.any(keys::contains) } }
 
     fun search(term: String) = flatKeys
             .alsoPrint { "Containing '$term':" }

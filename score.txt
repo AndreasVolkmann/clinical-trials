@@ -1,7 +1,0 @@
-Score	Iteration	Size	Dimension	Optimization
-0.83800626	13	9630	100	Adam
-0.8286604	39	9630	50	Adam
-0.7642783	74	9630	50	StochasticGradientDescent
-0.7123572	49	9630	100	StochasticGradientDescent
-0.30218068	1	9630	50	StochasticGradientDescent
-0.27310488	0	9630	50	StochasticGradientDescent

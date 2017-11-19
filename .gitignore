@@ -9,3 +9,4 @@ trials.txt
 results.txt
 old_res.txt
 py-ml/__pycache__/
+*.jar

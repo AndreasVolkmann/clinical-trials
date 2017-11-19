@@ -1,14 +1,11 @@
 package me.avo.clinical.trials.komputation
 
-import com.komputation.cpu.workflow.CpuTrainer
-import com.komputation.initialization.uniformInitialization
-import com.komputation.loss.logisticLoss
-import com.komputation.optimization.OptimizationInstruction
-import com.komputation.optimization.adaptive.adam
-import com.komputation.optimization.stochasticGradientDescent
-import java.io.File
+import com.komputation.cpu.workflow.*
+import com.komputation.initialization.*
+import com.komputation.loss.*
+import com.komputation.optimization.adaptive.*
 import java.util.*
-import kotlin.system.measureTimeMillis
+import kotlin.system.*
 
 fun main(args: Array<String>) {
     Args.parse(args)
@@ -24,7 +21,7 @@ fun run(embeddingDimension: Int) {
 
     val batchSize = 32
     val hasFixedLength = false
-    val numberIterations = 50
+    val numberIterations = 25
 
     val numberFilters = 100
 
@@ -64,35 +61,14 @@ fun run(embeddingDimension: Int) {
         println("$i) $score")
     }
 
-    val time = network
-            .training(trainingRepresentations, trainingTargets, numberIterations, logisticLoss(numberCategories), afterEach)
-            .train()
-
-    println("Took ${time / 1000 / 60} minutes")
-    updateScore(results, size, embeddingDimension, optimization)
+    try {
+        val time = network
+                .training(trainingRepresentations, trainingTargets, numberIterations, logisticLoss(numberCategories), afterEach)
+                .train()
+        println("Took ${time / 1000 / 60} minutes")
+    } finally {
+        updateScore(results, size, embeddingDimension, optimization)
+    }
 }
 
 fun CpuTrainer.train(): Long = measureTimeMillis { run() }
-
-fun updateScore(results: Pair<Int, Float>, size: Int, embeddingDimension: Int, optimization: OptimizationInstruction) = results.let { (iteration, score) ->
-    println("Best score: $results")
-    val delimiter = "\t"
-    val scoreFile = File("score.txt")
-    val exists = scoreFile.exists()
-    val lines: List<String> = if (exists) scoreFile.readLines().drop(1) else listOf()
-
-    val previousScore = if (exists && lines.isNotEmpty()) {
-        lines.first().split(delimiter).first().toFloat()
-    } else 0.0f
-
-    if (score > previousScore) {
-        println("New High score!")
-        val headers = listOf("Score", "Iteration", "Size", "Dimension", "Optimization")
-        val line = listOf(score, iteration, size, embeddingDimension, optimization::class.simpleName)
-        val converted = listOf(headers, line).map { it.joinToString(delimiter) }
-        val linesToWrite = converted + lines
-        scoreFile.printWriter().use { out ->
-            linesToWrite.forEach(out::println)
-        }
-    }
-}

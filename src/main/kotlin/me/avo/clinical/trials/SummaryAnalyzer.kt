@@ -28,7 +28,7 @@ object SummaryAnalyzer {
 
 
     /**
-     * Find words that would be cleaned and show their relative occurence
+     * Find words that would be cleaned and show their relative occurrence
      */
     fun findCleanedWords(trials: List<String>, i: Int = 10) = trials
             .map { TrialCombiner.cleanText(it) }

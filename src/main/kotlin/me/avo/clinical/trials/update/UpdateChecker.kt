@@ -4,11 +4,13 @@ import me.avo.clinical.trials.alsoPrint
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.io.*
 import java.text.SimpleDateFormat
+import java.util.*
 
-class UpdateChecker {
+class UpdateChecker(val currentFileDate: Date) {
 
-    private val url = "http://aact.ctti-clinicaltrials.org/pipe_files"
+    constructor(dir: File) : this(Date(dir.lastModified()))
 
     fun check() = Jsoup.connect(url).get()
             .firstElementByClass("file-archive")
@@ -16,7 +18,14 @@ class UpdateChecker {
             .getElementsByTag("tr")[1]
             .getElementsByTag("td")
             .let(this::makePipeFile)
-            .alsoPrint { "The latest files are from ${normalDateFormat.format(it.date)}" }
+            .also(this::evaluate)
+
+    fun evaluate(pipeFile: PipeFile) = if (pipeFile.date.after(currentFileDate)) {
+        println("New files available!")
+        println("The latest files are from ${normalDateFormat.format(pipeFile.date)}")
+    } else {
+        println("You already have the latest files")
+    }
 
     private fun makePipeFile(elements: Elements) = PipeFile(
             name = elements[0].text(),
@@ -24,12 +33,14 @@ class UpdateChecker {
             sizeInMb = elements[2].text().split(" ").first().toInt()
     )
 
-    private val ctDateFormat = SimpleDateFormat("mm/dd/yyyy")
+    private val url = "http://aact.ctti-clinicaltrials.org/pipe_files"
 
-    private val normalDateFormat = SimpleDateFormat("yyyy-mm-dd")
+    private val ctDateFormat = SimpleDateFormat("MM/dd/yyyy")
 
-    fun Element.firstElementByClass(name: String): Element = getElementsByClass(name).first()
+    private val normalDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
-    fun Element.firstElementByTag(name: String): Element = getElementsByTag(name).first()
+    private fun Element.firstElementByClass(name: String): Element = getElementsByClass(name).first()
+
+    private fun Element.firstElementByTag(name: String): Element = getElementsByTag(name).first()
 
 }

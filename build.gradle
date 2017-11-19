@@ -1,8 +1,8 @@
 group 'me.avo'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.1.60'
     ext.spark_version = '2.2.0'
 
     repositories {
@@ -14,6 +14,18 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'clinicaltrials',
+                'Implementation-Version': version,
+                'Main-Class': 'me.avo.clinical.trials.komputation.NLPNetworkKt'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    with jar
+}
 
 repositories {
     mavenCentral()
@@ -28,8 +40,8 @@ dependencies {
     compile "com.beust:jcommander:1.72"
     compile 'org.jsoup:jsoup:1.10.3'
 
-    compile "org.apache.spark:spark-mllib_2.11:$spark_version"
-    compile "org.apache.spark:spark-core_2.11:$spark_version"
+    //compile "org.apache.spark:spark-mllib_2.11:$spark_version"
+    //compile "org.apache.spark:spark-core_2.11:$spark_version"
 
     compile 'org.nield:kotlinstatistics:0.3.0'
 
@@ -39,6 +51,6 @@ dependencies {
         exclude group: 'org.jcuda'
     }
 
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.1"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.2"
     testCompile "org.amshove.kluent:kluent:1.30"
 }
