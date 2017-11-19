@@ -33,10 +33,10 @@ fun run(embeddingDimension: Int) {
 
     val keepProbability = 0.5f
 
-    val size = 9630
+    val size = 10_000
     val trainingSize = (size / 10) * 9
     val testSize = (size / 10)
-    println("Loading data")
+    println("Loading data (size = $size)")
     val (x, y) = TrialData.load(size)
 
     val trainingDocuments = x.take(trainingSize)

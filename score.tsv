@@ -1,4 +1,6 @@
 Score	Iteration	Size	Dimension	Optimization
+0.866	20	10000	100	Adam
+0.863	16	10000	50	Adam
 0.8598131	22	9630	50	Adam
 0.83800626	13	9630	100	Adam
 0.8286604	39	9630	50	Adam
