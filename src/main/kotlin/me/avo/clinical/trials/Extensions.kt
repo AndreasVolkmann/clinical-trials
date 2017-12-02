@@ -4,7 +4,7 @@ fun <T> List<T>.printTen() = take(10).onEach { println(it) }
 
 fun <R, T> Map<R, T>.printTen() = toList().printTen()
 
-fun <T> Collection<T>.print(i: Int = size) = also { take(i).onEach { println(it) } }
+fun <T, R: Collection<T>> R.print(i: Int = size): R = also { take(i).onEach { println(it) } }
 fun <R, T> Map<R, T>.print(i: Int = size) = also { entries.take(i).onEach { println(it) } }
 
 fun <T> T.alsoPrint(block: (T) -> String): T = apply {

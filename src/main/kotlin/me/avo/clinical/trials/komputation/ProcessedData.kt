@@ -9,5 +9,6 @@ data class ProcessedData(
         val testRepresentations: Array<Matrix>,
         val testTargets: Array<FloatArray>,
         val maximumDocumentLength: Int,
+        val indexedCategories: Map<String, Int>,
         val numberCategories: Int
 )

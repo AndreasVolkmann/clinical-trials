@@ -2,7 +2,7 @@ group 'me.avo'
 version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.1.60'
+    ext.kotlin_version = '1.2.0'
     ext.spark_version = '2.2.0'
 
     repositories {
@@ -19,7 +19,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'clinicaltrials',
                 'Implementation-Version': version,
-                'Main-Class': 'me.avo.clinical.trials.komputation.NLPNetworkKt'
+                'Main-Class': 'me.avo.clinical.trials.komputation.MainKt'
     }
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
@@ -43,13 +43,18 @@ dependencies {
     //compile "org.apache.spark:spark-mllib_2.11:$spark_version"
     //compile "org.apache.spark:spark-core_2.11:$spark_version"
 
-    compile 'org.nield:kotlinstatistics:0.3.0'
+    compile 'org.nield:kotlin-statistics:1.0.0'
 
     compile "org.tensorflow:tensorflow:1.4.0-rc0"
 
     compile ('com.komputation:komputation:0.11.0') {
         exclude group: 'org.jcuda'
     }
+
+    compile 'com.github.haifengl:smile-core:1.5.0'
+    compile 'com.github.haifengl:smile-nlp:1.5.0'
+    compile 'com.github.haifengl:smile-netlib:1.5.0'
+    compile 'com.github.haifengl:smile-plot:1.5.0'
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.2"
     testCompile "org.amshove.kluent:kluent:1.30"

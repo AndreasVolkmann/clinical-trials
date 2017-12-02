@@ -28,7 +28,7 @@ class MultiFilterNetwork(val batchSize: Int,
     override fun build(processedData: ProcessedData): Pair<Network, CpuTester> {
         val (embeddings, trainingRepresentations, trainingTargets,
                 testRepresentations, testTargets,
-                maximumDocumentLength, numberCategories
+                maximumDocumentLength, _, numberCategories
                 ) = processedData
 
         val network = Network(

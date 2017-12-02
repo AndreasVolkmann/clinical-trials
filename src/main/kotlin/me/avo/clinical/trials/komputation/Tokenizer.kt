@@ -56,5 +56,5 @@ fun tokenize(y: List<String>,
     return ProcessedData(embeddings,
             trainingRepresentations, trainingTargets,
             testRepresentations, testTargets,
-            maximumDocumentLength, numberCategories)
+            maximumDocumentLength, indexedCategories, numberCategories)
 }

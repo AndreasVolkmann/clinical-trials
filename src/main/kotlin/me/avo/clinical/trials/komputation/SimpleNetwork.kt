@@ -1,15 +1,14 @@
 package me.avo.clinical.trials.komputation
 
-import com.komputation.cpu.network.Network
-import com.komputation.cpu.workflow.CpuTester
-import com.komputation.initialization.UniformInitialization
-import com.komputation.layers.entry.lookupLayer
-import com.komputation.layers.forward.activation.reluLayer
-import com.komputation.layers.forward.activation.softmaxLayer
-import com.komputation.layers.forward.convolution.convolutionalLayer
-import com.komputation.layers.forward.dropout.dropoutLayer
-import com.komputation.layers.forward.projection.projectionLayer
-import com.komputation.optimization.OptimizationInstruction
+import com.komputation.cpu.network.*
+import com.komputation.cpu.workflow.*
+import com.komputation.initialization.*
+import com.komputation.layers.entry.*
+import com.komputation.layers.forward.activation.*
+import com.komputation.layers.forward.convolution.*
+import com.komputation.layers.forward.dropout.*
+import com.komputation.layers.forward.projection.*
+import com.komputation.optimization.*
 import java.util.*
 
 class SimpleNetwork(val batchSize: Int,
@@ -25,10 +24,7 @@ class SimpleNetwork(val batchSize: Int,
 ) : NetworkImplementation {
 
     override fun build(processedData: ProcessedData): Pair<Network, CpuTester> {
-        val (embeddings, trainingRepresentations, trainingTargets,
-                testRepresentations, testTargets,
-                maximumDocumentLength, numberCategories
-                ) = processedData
+        val (embeddings, _, _, testRepresentations, testTargets, maximumDocumentLength, _, numberCategories) = processedData
 
         val network = Network(
                 batchSize,
@@ -40,13 +36,7 @@ class SimpleNetwork(val batchSize: Int,
                 softmaxLayer(numberCategories)
         )
 
-        val test = network
-                .test(
-                        testRepresentations,
-                        testTargets,
-                        batchSize,
-                        numberCategories,
-                        1)
+        val test = network.test(testRepresentations, testTargets, batchSize, numberCategories, 1)
 
         return network to test
     }
