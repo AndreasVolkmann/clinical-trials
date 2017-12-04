@@ -6,6 +6,7 @@ gen
 .gradle
 trials.txt
 trials-converted.txt
+trials-smile-vectorized.txt
 *.iml
 results.txt
 old_res.txt
