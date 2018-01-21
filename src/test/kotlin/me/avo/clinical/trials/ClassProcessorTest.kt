@@ -11,7 +11,8 @@ internal class ClassProcessorTest {
         summaries.printTen()
     }
 
-    @Test fun keywords() {
+    @Test
+    fun keywords() {
         val keys = ClassLoader.loadKeywords()
         val processor = base(keys)
 

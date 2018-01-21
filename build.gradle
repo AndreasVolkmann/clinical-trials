@@ -2,8 +2,13 @@ group 'me.avo'
 version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.2.0'
+    ext.kotlin_version = '1.2.20'
     ext.spark_version = '2.2.0'
+    ext.smile_version = '1.5.0'
+    ext.kotlin_nlp_version = '0.1.0'
+    ext.jackson_version = '2.7.1-1'
+    ext.komputation_version = '0.11.1'
+    ext.deeplearning_version = '0.9.1'
 
     repositories {
         mavenCentral()
@@ -32,30 +37,47 @@ repositories {
     jcenter()
 
     maven { url "http://maven.twttr.com" }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "com.beust:jcommander:1.72"
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'org.jsoup:jsoup:1.11.2'
 
     //compile "org.apache.spark:spark-mllib_2.11:$spark_version"
     //compile "org.apache.spark:spark-core_2.11:$spark_version"
 
     compile 'org.nield:kotlin-statistics:1.0.0'
 
-    compile "org.tensorflow:tensorflow:1.4.0-rc0"
+    compile "org.tensorflow:tensorflow:1.4.0"
 
-    compile ('com.komputation:komputation:0.11.0') {
+    compile ("com.komputation:komputation:$komputation_version") {
         exclude group: 'org.jcuda'
     }
 
-    compile 'com.github.haifengl:smile-core:1.5.0'
-    compile 'com.github.haifengl:smile-nlp:1.5.0'
-    compile 'com.github.haifengl:smile-netlib:1.5.0'
-    compile 'com.github.haifengl:smile-plot:1.5.0'
+    //compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
+    //compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson_version"
 
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.2"
-    testCompile "org.amshove.kluent:kluent:1.30"
+    //compile "com.kotlinnlp:simplednn:$kotlin_nlp_version"
+    //compile "com.kotlinnlp:neuraltokenizer:$kotlin_nlp_version"
+    //compile "com.kotlinnlp:hanclassifier:$kotlin_nlp_version"
+
+    compile "com.github.haifengl:smile-core:$smile_version"
+    compile "com.github.haifengl:smile-nlp:$smile_version"
+    compile "com.github.haifengl:smile-netlib:$smile_version"
+    compile "com.github.haifengl:smile-plot:$smile_version"
+
+    compile "org.deeplearning4j:deeplearning4j-core:$deeplearning_version"
+    compile "org.deeplearning4j:deeplearning4j-nlp:$deeplearning_version"
+    compile "org.nd4j:nd4j-native-platform:$deeplearning_version"
+    compile ("org.datavec:datavec-spark_2.11:0.9.1_spark_2")
+
+    compile "de.mpicbg.scicomp:krangl:0.6"
+
+    compile 'com.atilika.kuromoji:kuromoji-ipadic:0.9.0'
+
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.3"
+    testCompile "org.amshove.kluent:kluent:1.34"
 }

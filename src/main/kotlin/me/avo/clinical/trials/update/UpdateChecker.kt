@@ -1,11 +1,10 @@
 package me.avo.clinical.trials.update
 
-import me.avo.clinical.trials.alsoPrint
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
+import org.jsoup.*
+import org.jsoup.nodes.*
+import org.jsoup.select.*
 import java.io.*
-import java.text.SimpleDateFormat
+import java.text.*
 import java.util.*
 
 class UpdateChecker(val currentFileDate: Date) {
@@ -23,6 +22,7 @@ class UpdateChecker(val currentFileDate: Date) {
     fun evaluate(pipeFile: PipeFile) = if (pipeFile.date.after(currentFileDate)) {
         println("New files available!")
         println("The latest files are from ${normalDateFormat.format(pipeFile.date)}")
+        println("Download them from: $url")
     } else {
         println("You already have the latest files")
     }

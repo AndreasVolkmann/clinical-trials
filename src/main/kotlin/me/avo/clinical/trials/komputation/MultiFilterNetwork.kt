@@ -1,16 +1,15 @@
 package me.avo.clinical.trials.komputation
 
-import com.komputation.cpu.network.Network
-import com.komputation.cpu.workflow.CpuTester
-import com.komputation.initialization.UniformInitialization
-import com.komputation.layers.entry.lookupLayer
-import com.komputation.layers.forward.activation.reluLayer
-import com.komputation.layers.forward.activation.softmaxLayer
-import com.komputation.layers.forward.concatenation
-import com.komputation.layers.forward.convolution.convolutionalLayer
-import com.komputation.layers.forward.dropout.dropoutLayer
-import com.komputation.layers.forward.projection.projectionLayer
-import com.komputation.optimization.OptimizationInstruction
+import com.komputation.cpu.network.*
+import com.komputation.cpu.workflow.*
+import com.komputation.initialization.*
+import com.komputation.layers.entry.*
+import com.komputation.layers.forward.*
+import com.komputation.layers.forward.activation.*
+import com.komputation.layers.forward.convolution.*
+import com.komputation.layers.forward.dropout.*
+import com.komputation.layers.forward.projection.*
+import com.komputation.optimization.*
 import java.util.*
 
 class MultiFilterNetwork(val batchSize: Int,
@@ -30,21 +29,14 @@ class MultiFilterNetwork(val batchSize: Int,
                 testRepresentations, testTargets,
                 maximumDocumentLength, _, numberCategories
                 ) = processedData
-
+/*
         val network = Network(
                 batchSize,
                 lookupLayer(embeddings, maximumDocumentLength, hasFixedLength, embeddingDimension, optimization),
                 concatenation(
-                        embeddingDimension,
-                        maximumDocumentLength,
-                        false,
-                        IntArray(numberFilterWidths) { numberFilters },
-                        1,
-                        filterWidths
-                                .map { filterWidth ->
-                                    convolutionalLayer(embeddingDimension, maximumDocumentLength, hasFixedLength, numberFilters, filterWidth, filterHeight, initialization, initialization, optimization)
-                                }
-                                .toTypedArray()
+                        *filterWidths.map { filterWidth ->
+                            convolutionalLayer(embeddingDimension, maximumDocumentLength, hasFixedLength, numberFilters, filterWidth, filterHeight, initialization, initialization, optimization)
+                        }.toTypedArray()
                 ),
                 reluLayer(numberFilterWidths * numberFilters),
                 dropoutLayer(random, keepProbability, numberFilterWidths * numberFilters),
@@ -59,7 +51,8 @@ class MultiFilterNetwork(val batchSize: Int,
                 numberCategories,
                 1)
 
-        return network to test
+        return network to test*/
+        TODO()
     }
 
 }

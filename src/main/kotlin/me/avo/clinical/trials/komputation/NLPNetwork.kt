@@ -59,7 +59,10 @@ fun run(embeddingDimension: Int, iterations: Int, size: Int) {
             println("Empty line = abort; Parsable Int = nextIterations")
             val input = readLine()
             if (input.isNullOrBlank()) proceed = false
-            else input!!.toIntOrNull()?.let { nextIterations = it }
+            else input!!.toIntOrNull()?.let {
+                println("Continuing with $it iterations ...")
+                nextIterations = it
+            }
         }
     } finally {
         println("Took ${time / 1000 / 60} minutes")

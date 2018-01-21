@@ -4,7 +4,7 @@ import java.io.File
 
 object ClassLoader {
 
-    private const val date = "_2017-10-17"
+    private const val date = ""
     val system: String = System.getProperty("os.name")
     val dir = if (system.contains("Windows", true)) "D:\\DL\\clinical-trials$date\\"
     else "/Users/av/Desktop/dev/clinical-trials-20170618/"
