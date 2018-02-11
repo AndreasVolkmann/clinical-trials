@@ -1,6 +1,6 @@
 package me.avo.clinical.trials
 
-import org.junit.jupiter.api.Assertions.*
+import me.avo.clinical.trials.processing.*
 import org.junit.jupiter.api.Test
 
 internal class SummaryAnalyzerTest {

@@ -1,5 +1,6 @@
 package me.avo.clinical.trials
 
+import me.avo.clinical.trials.processing.*
 import org.amshove.kluent.shouldBeLessOrEqualTo
 import org.junit.jupiter.api.Test
 
@@ -17,25 +18,25 @@ internal class ClassProcessorTest {
         val processor = base(keys)
 
         val trials = processor.trimToAverage()
-                .let {
-                    it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
-                    TrialCombiner.make(it)
-                }.sortedBy { it.summary.length }
+            .let {
+                it.values.forEach { it.size shouldBeLessOrEqualTo 4 }
+                TrialCombiner.make(it)
+            }.sortedBy { it.summary.length }
 
         val numWords = 10
         trials.filter { it.summary.split(" ").size < numWords }
-                .alsoPrint { "Trials with summary less than $numWords words: ${it.size}" }
-                .printTen()
+            .alsoPrint { "Trials with summary less than $numWords words: ${it.size}" }
+            .printTen()
 
 
         TrialCombiner.export(trials.take(30_000))
 
         processor.trimToAverage()
-                .let { TrialCombiner.make(it) } // make Trials
-                .filter { it.summary.split(" ").size > 6 } // at least 1 space / 2 words
-                .groupBy { it.keywords.first() } // group by 1st LOV
-                .flatMap { it.value.take(processor.sizeThreshold) } // take 50 from each
-                .let { TrialCombiner.export(it) }
+            .let { TrialCombiner.make(it) } // make Trials
+            .filter { it.summary.split(" ").size > 6 } // at least 1 space / 2 words
+            .groupBy { it.keywords.first() } // group by 1st LOV
+            .flatMap { it.value.take(processor.sizeThreshold) } // take 50 from each
+            .let { TrialCombiner.export(it) }
     }
 
 
@@ -43,10 +44,10 @@ internal class ClassProcessorTest {
     fun findTrialsWithLov() {
         val lov = "Cancer"
         ClassLoader.loadKeywords()
-                .filter { it.value.contains(lov) }
-                .let { ClassProcessor(it).trimToAverage() }
-                .let { keys -> TrialCombiner.make(keys) }
-                .print(20)
+            .filter { it.value.contains(lov) }
+            .let { ClassProcessor(it).trimToAverage() }
+            .let { keys -> TrialCombiner.make(keys) }
+            .print(20)
     }
 
 

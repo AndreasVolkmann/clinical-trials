@@ -2,7 +2,7 @@ group 'me.avo'
 version '1.0'
 
 buildscript {
-    ext.kotlin_version = '1.2.20'
+    ext.kotlin_version = '1.2.21'
     ext.spark_version = '2.2.0'
     ext.smile_version = '1.5.0'
     ext.kotlin_nlp_version = '0.1.0'
@@ -35,23 +35,25 @@ task fatJar(type: Jar) {
 repositories {
     mavenCentral()
     jcenter()
-
+    maven { url "http://dl.bintray.com/kotlin/exposed" }
     maven { url "http://maven.twttr.com" }
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "com.beust:jcommander:1.72"
     compile 'org.jsoup:jsoup:1.11.2'
+    compile 'org.jetbrains.exposed:exposed:0.9.1'
+    compile 'org.postgresql:postgresql:42.2.1'
 
     //compile "org.apache.spark:spark-mllib_2.11:$spark_version"
     //compile "org.apache.spark:spark-core_2.11:$spark_version"
 
     compile 'org.nield:kotlin-statistics:1.0.0'
 
-    compile "org.tensorflow:tensorflow:1.4.0"
+    compile "org.tensorflow:tensorflow:1.5.0"
 
     compile ("com.komputation:komputation:$komputation_version") {
         exclude group: 'org.jcuda'
