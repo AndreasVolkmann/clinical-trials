@@ -17,7 +17,7 @@ internal class SummaryAnalyzerTest {
         println("Analyze: $lov")
         ClassLoader.loadKeywords()
                 .filterValues { lov in it }
-                .let { TrialCombiner.makeRaw(it) }
+                .let(TrialCombiner::makeRaw)
                 .let { SummaryAnalyzer.findCleanedWords(it.map { it.summary }, 30) }
 
     }

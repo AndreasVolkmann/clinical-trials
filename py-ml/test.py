@@ -4,6 +4,7 @@ from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
@@ -55,7 +56,9 @@ def write_results(score, report):
 def standard(pipe):
     print("Pipeline:", type(pipe.named_steps["model"]).__name__)
     X_train, X_test, y_train, y_test = train_test_split(X, y)
+
     def fit(): pipe.fit(X_train, y_train)
+
     util.measure(fit)
     predicted = pipe.predict(X_test)
     score = np.mean(predicted == y_test)
@@ -65,8 +68,16 @@ def standard(pipe):
     # print(metrics.confusion_matrix(y_test, predicted))
 
 
-classifier = SGDClassifier(loss='hinge', penalty='l2', n_iter=8, random_state=42)
-standard(make_pipe(classifier))
+sgd = SGDClassifier(loss='hinge', penalty='l2', max_iter=8, random_state=42)
 
-#grid.gridding(make_pipe(SGDClassifier(loss='hinge', penalty='l2')), X, y)
+classifier = sgd
+pipe = make_pipe(classifier)
 
+# standard(pipe)
+# SGDClassifier(loss='hinge', penalty='l2')
+
+
+def getModel(): return pipe
+
+
+if __name__ == "__main__": grid.gridding(getModel, X, y)

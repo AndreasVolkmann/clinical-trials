@@ -1,8 +1,8 @@
 package me.avo.clinical.trials
 
 import me.avo.clinical.trials.processing.*
-import org.amshove.kluent.shouldBeLessOrEqualTo
-import org.junit.jupiter.api.Test
+import org.amshove.kluent.*
+import org.junit.jupiter.api.*
 
 internal class ClassProcessorTest {
 
@@ -53,16 +53,16 @@ internal class ClassProcessorTest {
 
     @Test
     fun common() {
-        val keys = ClassLoader.loadKeywords()
-        val trials = ClassProcessor(keys).let {
-            val data = it.filterByCommon(5)
-            val filtered = it.trimToAverage(data)
-            TrialCombiner.make(filtered)
-        }.filter { it.summary.contains(" ") }
-
-        //.also { it.distinctBy { it.keywords.first() }.onEach { println(it) } }
-
-        TrialCombiner.export(trials)
+        ClassLoader
+            .loadKeywords()
+            .let(::ClassProcessor)
+            .let { cp ->
+                cp.filterByCommon(5)
+                    .let(cp::trimToAverage)
+                    .let(TrialCombiner::make)
+            }
+            .filter { it.summary.contains(" ") }
+            .let(TrialCombiner::export)
     }
 
     @Test

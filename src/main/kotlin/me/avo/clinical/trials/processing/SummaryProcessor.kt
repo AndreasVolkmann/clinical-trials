@@ -4,7 +4,7 @@ package me.avo.clinical.trials.processing
  * Reduce size of summaries by over 50 %
  */
 fun List<String>.filterWords(): List<String> =
-    filterNot(::isCommon).alsoPrint { "Filtered words: ${formatPercent(it.size, this.size)}" }
+    filterNot(::isCommon)//.alsoPrint { "Filtered words: ${formatPercent(it.size, this.size)}" }
 
 
 fun String.filterWords(ignore: List<String>): String = this
@@ -12,8 +12,8 @@ fun String.filterWords(ignore: List<String>): String = this
     .filter { !isCommon(it) || it in ignore } // only keep words that are in ignore or aren't common
     .joinToString(" ")
 
-val words = setOf(
-    "the", "of", "and", "to", "in", "a", "is", "with", "will", "for", "be", "this", "that", "on", "or", "are",
+val words = setOf<String>(
+    "a", "the", "of", "and", "to", "in", "a", "is", "with", "will", "for", "be", "this", "that", "on", "or", "are",
     "as", "by", "an", "at", "have", "after", "from", "their", "has", "can", "which", "group", "use", "been",
     "evaluate", "purpose", "clinical", "study", "patients", "treatment", "investigators", "safety", "randomized",
     "been", "trial", "who", "not", "may", "risk", "determine", "intervention", "efficacy", "care",
@@ -44,6 +44,7 @@ val words = setOf(
     "range", "success", "before", "background", "increases", "develop", "interventions", "parameters",
     "need", "month", "pre", "end", "called", "receiving", "reduction", "overall", "prior", "less", "reported",
     "evaluating", "available", "objectives", "explore", "before"
+
 )
 
 val ignore = setOf(

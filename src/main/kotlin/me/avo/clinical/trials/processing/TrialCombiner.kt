@@ -11,18 +11,16 @@ object TrialCombiner {
         .filter { summaries.containsKey(it.key) }
         .map { (id, keywords) ->
             Trial(
-                id, keywords, summaries[id]!!
+                id, keywords,
+                summaries[id]!!
+                    //.filterWords(listOf())
             )
         }
         .alsoPrint { "Was able to combine ${it.size} Trials" }
 
     val summaries = ClassLoader.loadSummaries()
-        .filterValues {
-            !it.contains("See above", true)
-                    && !it.contains("brief summary", true)
-                    && !it.contains("see summary", true)
-        }
-
+        .mapValues { it.value.toLowerCase() }
+        .filterValues { !it.contains("see above") && !it.contains("brief summary") && !it.contains("see summary") }
 
     fun export(trials: List<Trial>) = File("trials.txt").printWriter().use { out ->
         val headers = listOf("Label", "Summary")
@@ -44,14 +42,14 @@ object TrialCombiner {
 
     fun cleanText(text: String) = text.clean()
 
-
     fun makeRaw(data: Map<String, List<String>>) = data
-        .filter { summaries.containsKey(it.key) }
+        .filterKeys(summaries::containsKey)
         .map { (id, keywords) -> makeTrial(id, keywords) }
 
-
     fun makeTrial(id: String, keywords: List<String>) = Trial(
-        id, keywords, summaries[id]!!.filterWords(keywords).clean()
+        id = id,
+        keywords = keywords,
+        summary = summaries[id]!!.filterWords(keywords).clean()
     )
 
 }

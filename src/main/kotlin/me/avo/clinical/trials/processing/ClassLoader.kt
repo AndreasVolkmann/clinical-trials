@@ -25,7 +25,10 @@ object ClassLoader {
         .map(body)
         .toList()
 
-    fun loadSummaries() = extract(summaryFile) {
+    /**
+     * @return id to content
+     */
+    fun loadSummaries(): Map<String, String> = extract(summaryFile) {
         it[1] to it[2].trimQuotesAndSpace()
     }.toMap()
 
