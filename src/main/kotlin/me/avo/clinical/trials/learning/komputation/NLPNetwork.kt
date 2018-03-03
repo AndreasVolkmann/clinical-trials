@@ -2,7 +2,7 @@ package me.avo.clinical.trials.learning.komputation
 
 import com.komputation.cpu.workflow.*
 import com.komputation.initialization.*
-import com.komputation.loss.*
+import com.komputation.instructions.loss.*
 import com.komputation.optimization.adaptive.*
 import java.awt.*
 import java.util.*
@@ -12,14 +12,12 @@ fun run(embeddingDimension: Int, iterations: Int, size: Int) {
     val initialization: InitializationStrategy = uniformInitialization(random, -0.1f, 0.1f)
     // uniformInitialization(random, -0.1f, 0.1f)
 
-
     val optimization = adam()
 
-    val batchSize = 32
+    val batchSize = 10
     val hasFixedLength = false
 
     val numberFilters = 100
-
     val filterHeight = embeddingDimension
     val filterWidth = 2
     val filterWidths = intArrayOf(2, 3)
@@ -44,7 +42,7 @@ fun run(embeddingDimension: Int, iterations: Int, size: Int) {
 
     println("Starting network, $iterations iterations")
     val (network, test) = SimpleNetwork(
-        batchSize, hasFixedLength, numberFilters, random, keepProbability, initialization, optimization,
+        batchSize, numberFilters, random, keepProbability, initialization, optimization,
         embeddingDimension, filterWidth, filterHeight
     ).build(processedData)
 
@@ -74,9 +72,10 @@ fun run(embeddingDimension: Int, iterations: Int, size: Int) {
         while (proceed) {
             time += network
                 .training(
-                    trainingRepresentations, trainingTargets, nextIterations, logisticLoss(numberCategories), afterEach
+                    trainingRepresentations, trainingTargets, nextIterations, logisticLoss(), afterEach
                 )
                 .run()
+                .first
             println("Would you like to proceed training? (Best score so far: ${results.second}")
             println("Empty line = abort; Parsable Int = nextIterations")
             val input = readLine()

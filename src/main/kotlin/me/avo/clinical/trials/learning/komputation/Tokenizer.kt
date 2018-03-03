@@ -1,19 +1,21 @@
 package me.avo.clinical.trials.learning.komputation
 
-import com.komputation.demos.trec.NLP
-import java.io.File
+import com.komputation.demos.trec.*
+import java.io.*
 
-fun tokenize(y: List<String>,
-             trainingDocuments: Iterable<List<String>>,
-             testDocuments: Iterable<List<String>>,
-             maximumFilterWidth: Int,
-             trainingSize: Int,
-             testSize: Int,
-             embeddingDimension: Int): ProcessedData {
+fun tokenize(
+    y: List<String>,
+    trainingDocuments: Iterable<List<String>>,
+    testDocuments: Iterable<List<String>>,
+    maximumFilterWidth: Int,
+    trainingSize: Int,
+    testSize: Int,
+    embeddingDimension: Int
+): ProcessedData {
 
     val vocabulary = NLP.generateVocabulary(trainingDocuments)
 
-    val embeddingFilePath: String = "D:\\Dev\\data\\glove\\glove.6B.${embeddingDimension}d.txt"
+    val embeddingFilePath = "D:\\Dev\\data\\glove\\glove.6B.${embeddingDimension}d.txt"
     val embeddingFile = File(embeddingFilePath)
 
     val embeddingMap = NLP.embedVocabulary(vocabulary, embeddingFile)
@@ -50,11 +52,13 @@ fun tokenize(y: List<String>,
     val testTargets = NLP.createTargets(embeddableTestCategories, indexedCategories)
 
     val embeddings = embeddableVocabulary
-            .map { token -> embeddingMap[token]!! }
-            .toTypedArray()
+        .map { token -> embeddingMap[token]!! }
+        .toTypedArray()
 
-    return ProcessedData(embeddings,
-            trainingRepresentations, trainingTargets,
-            testRepresentations, testTargets,
-            maximumDocumentLength, indexedCategories, numberCategories)
+    return ProcessedData(
+        embeddings,
+        trainingRepresentations, trainingTargets,
+        testRepresentations, testTargets,
+        maximumDocumentLength, indexedCategories, numberCategories
+    )
 }

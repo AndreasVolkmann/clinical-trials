@@ -5,7 +5,7 @@ import java.io.File
 object TrialData {
 
     const val delimiter = "|"
-    const val path = "trials.txt"
+    const val path = "trials_combined_text.psv"
 
     fun load(size: Int): Pair<List<List<String>>, List<String>> {
         val lines = File(path)

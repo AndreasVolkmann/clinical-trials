@@ -9,13 +9,7 @@ object TrialCombiner {
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
         .filter { summaries.containsKey(it.key) }
-        .map { (id, keywords) ->
-            Trial(
-                id, keywords,
-                summaries[id]!!
-                    //.filterWords(listOf())
-            )
-        }
+        .map { (id, keywords) -> Trial(id, keywords, title = "", summary = summaries[id]!!) }
         .alsoPrint { "Was able to combine ${it.size} Trials" }
 
     val summaries = ClassLoader.loadSummaries()
@@ -49,6 +43,7 @@ object TrialCombiner {
     fun makeTrial(id: String, keywords: List<String>) = Trial(
         id = id,
         keywords = keywords,
+        title = "",
         summary = summaries[id]!!.filterWords(keywords).clean()
     )
 

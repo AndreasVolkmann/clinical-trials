@@ -20,3 +20,4 @@ fun formatPercent(part: Int, total: Int) = toPercent(part, total).let {
 }
 
 fun String.trimQuotesAndSpace() = removeSurrounding("\"").trim()
+fun String.removeNewlineTrimSpaces() = replace("\n", "").replace("( +)"," ")

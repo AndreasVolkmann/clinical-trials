@@ -7,3 +7,11 @@ Data Source: https://clinicaltrials.gov/
 Schema: https://s3.amazonaws.com/aact-prod/documentation/aact_schema.png
 
 Latest scores can be found in scores.txt
+
+
+TODO
+* [ ] Include conditions
+* [ ] Include interventions
+* [ ] Include design group title and description
+* [ ] Include design outcomes
+* [ ] Include sponsors

@@ -4,23 +4,22 @@ from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.naive_bayes import BernoulliNB
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+
 import grid
 import util
 
-data = pd.read_csv("../trials.txt", delimiter="|", quotechar='"')
+filename = "trials_combined_text.psv"
+data = pd.read_csv("../" + filename, delimiter="|", quotechar='"')
 
-X = data.Summary
+X = data.Text
 y = data.Label
-print(X.shape)
-print(y.shape)
-print(data.head(10))
+
+
+# print(X.shape)
+# print(y.shape)
+# print(data.head(10))
 
 
 def make_pipe(model):
@@ -72,12 +71,15 @@ sgd = SGDClassifier(loss='hinge', penalty='l2', max_iter=8, random_state=42)
 
 classifier = sgd
 pipe = make_pipe(classifier)
+standard(pipe)
+
 
 # standard(pipe)
 # SGDClassifier(loss='hinge', penalty='l2')
 
 
-def getModel(): return pipe
+def getModel(alpha, n_iter, loss, penalty, n_jobs):
+    return make_pipe(SGDClassifier(loss=loss, penalty=penalty, alpha=alpha, n_jobs=n_jobs, n_iter=n_iter))
 
 
-if __name__ == "__main__": grid.gridding(getModel, X, y)
+#if __name__ == "__main__": grid.gridding(pipe, X, y)
