@@ -1,7 +1,9 @@
 package me.avo.clinical.trials.processing.db
 
-import me.avo.clinical.trials.processing.*
-import java.io.*
+import me.avo.clinical.trials.processing.Trial
+import me.avo.clinical.trials.processing.alsoPrint
+import me.avo.clinical.trials.processing.removeNewlineTrimSpaces
+import java.io.File
 
 class DatabaseService {
 
@@ -14,7 +16,7 @@ class DatabaseService {
             out.println(headers)
             it
                 .map { it.split("|") }
-                .map { Trial(it[0], listOf(it[1]), it[2], it[3]) }
+                .map { Trial(it[0], listOf(it[1]), it[2], it[3], listOf()) }
                 .map { it.copy(summary = it.summary.removeNewlineTrimSpaces()) }
                 .map(Trial::toLine)
                 .forEach(out::println)
@@ -28,6 +30,11 @@ class DatabaseService {
             getTrials(keywords)
         }.alsoPrint { "Found ${it.size} Trials" }
 
+
+        //val fileSizeMap = listOf(trialWithTitleFile, trialsCombinedText)
+        val trialTitleSizePre = getFileSize(trialWithTitleFile)
+        val trialCombinedSizePre = getFileSize(trialsCombinedText)
+
         trialWithTitleFile.printWriter().use { out ->
             val lines = trials.map(Trial::toLine)
             out.println(headers)
@@ -39,12 +46,24 @@ class DatabaseService {
                 .map(Trial::toCombinedLine)
                 .forEach(out::println)
         }
+
+        trialTitleSizePre?.compareSize(trialWithTitleFile)
+        trialCombinedSizePre?.compareSize(trialsCombinedText)
     }
 
-    val headers = listOf("Id", "Keyword", "Title", "Summary").join()
+    private val headers = listOf("Id", "Keyword", "Title", "Summary").join()
+
+    private fun getFileSize(file: File): Long? = if (file.exists()) file.length() / 1024 else null
+
+    private fun Long.compareSize(other: File) = getFileSize(other)?.let {
+        println("${other.name} size difference: ${it - this}")
+    }
 
 }
 
-private fun List<String>.join() = joinToString("|")
+private const val delimiter = "|"
+private fun List<String>.join() = joinToString(delimiter)
 private fun Trial.toLine() = listOf(id, keywords.first(), title, summary).join()
-private fun Trial.toCombinedLine() = listOf(keywords.first(), "$title $summary").join()
+private fun Trial.toCombinedLine() = listOf(keywords.first(), "$title $summary ${conditions.joinToString(" ")}")
+    .map { it.replace(delimiter, " ") }
+    .join()

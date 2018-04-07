@@ -7,7 +7,6 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
-import grid
 import util
 
 filename = "trials_combined_text.psv"
@@ -81,5 +80,4 @@ standard(pipe)
 def getModel(alpha, n_iter, loss, penalty, n_jobs):
     return make_pipe(SGDClassifier(loss=loss, penalty=penalty, alpha=alpha, n_jobs=n_jobs, n_iter=n_iter))
 
-
-#if __name__ == "__main__": grid.gridding(pipe, X, y)
+# if __name__ == "__main__": grid.gridding(pipe, X, y)

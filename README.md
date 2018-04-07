@@ -10,7 +10,7 @@ Latest scores can be found in scores.txt
 
 
 TODO
-* [ ] Include conditions
+* [x] Include conditions
 * [ ] Include interventions
 * [ ] Include design group title and description
 * [ ] Include design outcomes

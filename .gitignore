@@ -13,3 +13,4 @@ old_res.txt
 py-ml/__pycache__/
 *.jar
 *.psv
+progress.txt

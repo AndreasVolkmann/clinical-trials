@@ -4,5 +4,6 @@ data class Trial(
     val id: String,
     val keywords: List<String>,
     val title: String,
-    val summary: String
+    val summary: String,
+    val conditions: List<String>
 )

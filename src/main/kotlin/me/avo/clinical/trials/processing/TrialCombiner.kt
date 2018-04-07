@@ -1,6 +1,6 @@
 package me.avo.clinical.trials.processing
 
-import java.io.*
+import java.io.File
 
 object TrialCombiner {
 
@@ -9,7 +9,7 @@ object TrialCombiner {
 
     fun make(data: Map<String, List<String>>): List<Trial> = data
         .filter { summaries.containsKey(it.key) }
-        .map { (id, keywords) -> Trial(id, keywords, title = "", summary = summaries[id]!!) }
+        .map { (id, keywords) -> Trial(id, keywords, title = "", summary = summaries[id]!!, conditions = listOf()) }
         .alsoPrint { "Was able to combine ${it.size} Trials" }
 
     val summaries = ClassLoader.loadSummaries()
@@ -44,7 +44,8 @@ object TrialCombiner {
         id = id,
         keywords = keywords,
         title = "",
-        summary = summaries[id]!!.filterWords(keywords).clean()
+        summary = summaries[id]!!.filterWords(keywords).clean(),
+        conditions = listOf()
     )
 
 }
