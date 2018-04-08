@@ -5,5 +5,6 @@ data class Trial(
     val keywords: List<String>,
     val title: String,
     val summary: String,
-    val conditions: List<String>
+    val conditions: List<String>,
+    val more: String? = null
 )

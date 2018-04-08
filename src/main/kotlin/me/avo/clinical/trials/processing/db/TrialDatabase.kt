@@ -30,47 +30,104 @@ class TrialDatabase {
     }
 
     fun getTrials(keywords: List<String>): List<Trial> = transaction {
-        (BriefSummaries innerJoin Keywords innerJoin Studies leftJoin Conditions)
-            .slice(BriefSummaries.columns + Keywords.name + Studies.officialTitle + Studies.briefTitle + Conditions.name)
+        (BriefSummaries innerJoin Keywords
+                leftJoin Studies
+                leftJoin Conditions
+                leftJoin Interventions
+                leftJoin DesignGroups
+                leftJoin DesignOutcomes
+                leftJoin Sponsors
+                )
+            .slice(
+                BriefSummaries.columns + Keywords.name +
+                        Studies.officialTitle + Studies.briefTitle +
+                        Conditions.name +
+                        Interventions.name + Interventions.type + Interventions.description +
+                        DesignGroups.title + DesignGroups.groupType + DesignGroups.description +
+                        DesignOutcomes.measure + DesignOutcomes.timeframe + DesignOutcomes.description +
+                        Sponsors.name
+            )
             .select {
                 if (keywords.isEmpty()) Keywords.name.isNotNull()
                 else Keywords.name inList keywords
             }
-            .groupBy { it[BriefSummaries.nct_id] }
+            .groupBy { it[BriefSummaries.nctId] }
             .values
             .map {
                 val firstRow = it.first()
                 Trial(
-                    id = firstRow[BriefSummaries.nct_id],
+                    id = firstRow[BriefSummaries.nctId],
                     title = firstRow[Studies.officialTitle] ?: firstRow[Studies.briefTitle],
                     summary = firstRow[BriefSummaries.description].trimQuotesAndSpace().removeNewlineTrimSpaces(),
                     keywords = it.map { it[Keywords.name] }.distinct(),
-                    conditions = it.mapNotNull { it[Conditions.name] }.distinct()
+                    conditions = it.mapNotNull { it[Conditions.name] }.distinct(),
+                    more = it.flatMap {
+                        listOfNotNull(
+                            it[Interventions.name],
+                            it[Interventions.description],
+                            it[Interventions.type],
+                            it[DesignGroups.groupType],
+                            it[DesignGroups.description],
+                            it[DesignGroups.title],
+                            it[DesignOutcomes.description],
+                            it[DesignOutcomes.measure],
+                            it[DesignOutcomes.timeframe],
+                            it[Sponsors.name]
+                        )
+                    }.distinct().joinToString(" ", transform = String::clean)
                 )
             }
     }
 
 }
 
+private fun Table.nctId() = varchar("nct_id", 255) references BriefSummaries.nctId
+
 object Studies : Table("studies") {
-    val nct_id = varchar("nct_id", 255) references BriefSummaries.nct_id
+    val nctId = nctId()
     val officialTitle = text("official_title").nullable()
     val briefTitle = text("brief_title")
 }
 
 object BriefSummaries : Table("brief_summaries") {
-    val id = integer("id")
-    val nct_id = varchar("nct_id", 255)
+    //val id = integer("id")
+    val nctId = varchar("nct_id", 255)
     val description = text("description")
 }
 
 object Keywords : Table("keywords") {
     val id = integer("id")
-    val nct_id = varchar("nct_id", 255) references BriefSummaries.nct_id
+    val nctId = nctId()
     val name = varchar("name", 255)
 }
 
 object Conditions : Table("conditions") {
-    val nct_id = varchar("nct_id", 255) references BriefSummaries.nct_id
+    val nctId = nctId()
     val name = varchar("name", 255).nullable()
+}
+
+object Interventions : Table("interventions") {
+    val nctId = nctId()
+    val type = varchar("intervention_type", 255).nullable()
+    val name = varchar("name", 255).nullable()
+    val description = text("description").nullable()
+}
+
+object DesignGroups : Table("design_groups") {
+    val nctId = nctId()
+    val groupType = varchar("group_type", 255).nullable()
+    val title = varchar("title", 255).nullable()
+    val description = varchar("description", 255).nullable()
+}
+
+object DesignOutcomes : Table("design_outcomes") {
+    val nctId = nctId()
+    val measure = text("measure").nullable()
+    val timeframe = text("time_frame").nullable()
+    val description = text("description").nullable()
+}
+
+object Sponsors : Table("sponsors") {
+    val nctId = nctId()
+    val name = varchar("name", 255)
 }

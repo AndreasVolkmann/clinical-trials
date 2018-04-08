@@ -65,5 +65,7 @@ private const val delimiter = "|"
 private fun List<String>.join() = joinToString(delimiter)
 private fun Trial.toLine() = listOf(id, keywords.first(), title, summary).join()
 private fun Trial.toCombinedLine() = listOf(keywords.first(), "$title $summary ${conditions.joinToString(" ")}")
-    .map { it.replace(delimiter, " ") }
+    .map(String::clean)
     .join()
+
+fun String.clean() = replace(delimiter, " ")
